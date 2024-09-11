@@ -65,3 +65,5 @@ Some scripts also included but are not used in the pipeline are the following:
 * Plot.py: Takes a .csv file and created a heatmap of the copy numbers.
 * Run2Lib.py: takes an either an input file or a directory and a mapping file of a:b and replaces every instance of a in the file/directory with b.
 * ValidateAll.py: Validates all .bam files in a given directory.
+* RandCells.py: Takes a .vcf file and randomly selects n cells to keep from the file
+* RandSample.py: Takes a .vcf file and randomly selects n loci to keep from the file
