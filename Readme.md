@@ -13,7 +13,7 @@ Each script contained assumes you have the following dependencies downloaded and
 ## Installation
 To install,
 ```
-git clone [link]
+git clone https://github.com/Carter-Payne/Preprocessing-Scripts.git
 cd PreprocessingScripts
 ```
 ## Pipeline.py
