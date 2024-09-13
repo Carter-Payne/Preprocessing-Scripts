@@ -7,7 +7,7 @@ def ParseArgs():
     parser = argparse.ArgumentParser(prog='RandCells', description="Program that reduces the size of a vcf file using random sampling of snv cells")
     parser.add_argument("-i", "--INPUT", metavar='Input', required=True,help="Path to the vcf file", type=str)
     parser.add_argument("-o", "--OUTPUT", metavar='Output', required=True,help="file path of output file in the form of /path/to/output.vcf", type=str)
-    parser.add_argument("-n","--NUMBER", metavar="number",required=True, help="Number of SNV loci you want", type=int)
+    parser.add_argument("-n","--NUMBER", metavar="number",required=True, help="Number of SNV cells you want", type=int)
     return parser.parse_args()
 def Validate(Args):
     check=True
@@ -36,9 +36,11 @@ def Main():
             randnums.append(x)
             i-=1
     randnums.sort()
-    for i in randnums:
-        keep+=samples[i]+","
-    keep=keep[:-1]
-    os.system('bcftools view -s'+ keep +' -o '+Args.OUTPUT+" "+ Args.INPUT)
+    with open('tmprs12321.txt','w') as f:
+        for i in randnums:
+            f.write(samples[i]+"\n")
+    f.close()
+    os.system('bcftools view -S tmprs12321.txt -o '+Args.OUTPUT+" "+ Args.INPUT)
+    os.remove('tmprs12321.txt')
 if __name__=="__main__":
     Main()
