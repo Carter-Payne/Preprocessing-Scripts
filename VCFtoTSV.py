@@ -3,7 +3,7 @@ import argparse
 def ParseArgs():
     parser = argparse.ArgumentParser(prog='VCF2TSV', description="Program that transforms a vcf file into a binary/ternary tsv file")
     parser.add_argument("-i", "--INPUT", metavar='Input', required=True,help="Path to the vcf file", type=str)
-    parser.add_argument("-o", "--OUTPUT", metavar='Output', required=True,help="file path of output file in the form of /path/to/output.tsv", type=str)
+    parser.add_argument("-o", "--OUTPUT", metavar='Output', required=True,help="file path of output file in the form of /path/to/output.tsv or /path/to/output.txt", type=str)
     parser.add_argument("-t","--TYPE", metavar="type",required=True, choices=['binary','ternary'], help="Type of matrix you want, either 'binary' or 'ternary'", type=str)
     parser.add_argument("-s","--SPACING", metavar="spacing",required=True, choices=['tab','space'], help="Type of spacing separating the matrix, either 'tab' or 'space'", type=str)
     parser.add_argument("-l","--LIST", metavar="Sample list",required=False, default=None, help="Optional path to a text file for sample names if they are needed in a separate file.", type=str)
@@ -13,11 +13,11 @@ def ValidateInputs(args):
     if os.path.exists(args.INPUT) is False:
         print('Input file does not exist')
         check=False
-    if args.OUTPUT.endswith('tsv') is False:
+    if args.OUTPUT.endswith('tsv') is False and args.OUTPUT.endswith('txt') is False:
         print('Output file in incorrect format')
         check=False
-        if args.SAMPLE is not None:
-            if args.SAMPLE.endswith('txt') is False:
+    if args.LIST is not None:
+        if args.LIST.endswith('txt') is False:
                 print('Incorrect sample file format')
                 check=False
     return check
