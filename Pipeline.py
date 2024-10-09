@@ -230,8 +230,8 @@ def Pipeline(args):
             else:
                 SeCNV(args.OUTPUT,args.CNAPATH,args.REFERENCE,args.HG,"*.fixed.mq.bam",args.BIN,args.PREFIX)
             run=str((time.time()-curr)/3600)
-            CSVConvert(args.CNAPATH+args.PREFIX+".csv",args.CNAPATH+args.PREFIX+"DICE.tsv",colnames="CELL\tchrom\tstart\tend\tCN\n")
-            CSVConvert(args.CNAPATH+args.PREFIX+".csv",args.CNAPATH+args.PREFIX+"MEDICC2.tsv",colnames="sample_id\tchrom\tstart\tend\tCN\n")
+            CSVConvert(args.CNAPATH+args.PREFIX+".csv",args.CNAPATH+args.PREFIX+"DICE.tsv",mode="dice")
+            CSVConvert(args.CNAPATH+args.PREFIX+".csv",args.CNAPATH+args.PREFIX+"MEDICC2.tsv",mode="medicc2")
             print("Finished creating CN matrix in "+run+" hours")
             f.write("Creating CN matrix: "+run+" hours\n")
         run=str((time.time()-starttime)/86400)
