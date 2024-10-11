@@ -9,7 +9,7 @@ def ParseArgs():
     parser = argparse.ArgumentParser(prog='Pipeline', description="Accession List to SNV and CNA analysis files pipeline")
     parser.add_argument("-a", "--ACCESSION", metavar='Accession List', required=False,help="Path to the accession list of the sample(s) you want to process, if you already have the samples, specify their location using -ao", type=str)
     parser.add_argument("-ao","--ACCESSIONOUTPUT", metavar='FASTQ folder', required=True,help="Path to the output folder for the FASTQ files", type=str)
-    parser.add_argument("-pd","--PREFETCHDIR", metavar='Prefetch folder', required=True, help="Path to the output folder of the prefetch directory, set by the SRA toolkit", type=str)
+    parser.add_argument("-pd","--PREFETCHDIR", metavar='Prefetch folder', required=False, help="Path to the output folder of the prefetch directory, set by the SRA toolkit", type=str)
     parser.add_argument("-r", "--REFERENCE", metavar="Reference file", required=True, help="Path to the reference file",type=str)
     parser.add_argument("-i","--INDEX", help="Set if you need to index the reference file", default=False,action='store_true')
     parser.add_argument("-t", "--THREADS", metavar="Threads",help="Number of threads to use (default: Auto)",type=int,default=int(os.popen('nproc --all').read().strip()))
@@ -38,8 +38,9 @@ def ValidateInputs(args):
     check=True
     if args.ACCESSIONOUTPUT[-1]!='/':
         args.ACCESSIONOUTPUT+="/"
-    if args.PREFETCHDIR[-1]!='/':
-        args.PREFETCHDIR+="/"
+    if args.PREFETCHDIR is not None:
+        if args.PREFETCHDIR[-1]!='/':
+            args.PREFETCHDIR+="/"
     if args.TEMP[-1]!='/':
         args.TEMP+="/"
     if args.LOG[-1]!='/':
