@@ -27,7 +27,7 @@ def ParseArgs():
     parser.add_argument("-pq", "--PQ", metavar="Phred Quality",help="Minimum phred quality for variant filtering (default: 40)",type=int,default=40)
     parser.add_argument("-mind", "--MINDEPTH", metavar="Minimum Read Depth",help="Minimum read depth for variant filtering(default: 10)",type=int,default=10)
     parser.add_argument("-maxd", "--MAXDEPTH", metavar="Maximum Read Depth",help="Maximum read depth for variant filtering(default: None)",type=int)
-    parser.add_argument("-p","--PREFIX",metavar="File Prefix", required=True, help="Prefix for the finished CNA and SNV files.",type=str)
+    parser.add_argument("-p","--PREFIX",metavar="File Prefix", required=False, help="Prefix for the finished CNA and SNV files.",type=str)
     parser.add_argument("-b","--BIN",metavar="Bin sizes", help="Bin sizes to be used for CNA analysis(default: 500kb)",type=int,default=500000)
     parser.add_argument("-d","--DEBUG", help="Select this option if you need to keep each intermitten file in the pipeline(only select this option if you have enough space to do so.)",default=False,action='store_true')
     parser.add_argument("-l","--LOG",metavar="Log file", help="Path for the file storing pipeline running times.(default: current directory)",type=str,default=os.getcwd())
@@ -77,6 +77,9 @@ def ValidateInputs(args):
         if os.path.exists(args.CNAPATH) is False:
             check=False
             print(args.CNAPATH +" does not exist")
+        if args.PREFIX is None:
+            check=False
+            print("No Prefix Given")
     if len(args.READGROUP)!=2 and len(args.READGROUP)!=3:
         check=False
         print("Incorrect number of Read Groups arguments")     
