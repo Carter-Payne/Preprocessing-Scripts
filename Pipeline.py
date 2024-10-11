@@ -7,7 +7,7 @@ from CNA import *
 import argparse
 def ParseArgs():
     parser = argparse.ArgumentParser(prog='Pipeline', description="Accession List to SNV and CNA analysis files pipeline")
-    parser.add_argument("-a", "--ACCESSION", metavar='Accession List', required=True,help="Path to the accession list of the sample(s) you want to process", type=str)
+    parser.add_argument("-a", "--ACCESSION", metavar='Accession List', required=False,help="Path to the accession list of the sample(s) you want to process, if you already have the samples, specify their location using -ao", type=str)
     parser.add_argument("-ao","--ACCESSIONOUTPUT", metavar='FASTQ folder', required=True,help="Path to the output folder for the FASTQ files", type=str)
     parser.add_argument("-pd","--PREFETCHDIR", metavar='Prefetch folder', required=True, help="Path to the output folder of the prefetch directory, set by the SRA toolkit", type=str)
     parser.add_argument("-r", "--REFERENCE", metavar="Reference file", required=True, help="Path to the reference file",type=str)
@@ -46,7 +46,7 @@ def ValidateInputs(args):
         args.LOG+="/"
     if args.OUTPUT[-1]!='/':
         args.OUTPUT+="/"
-    if os.path.exists(args.ACCESSION) is False:
+    if args.ACCESSION is not None and os.path.exists(args.ACCESSION) is False:
         check=False
         print(args.ACCESSION +" does not exist")
     if os.path.exists(args.OUTPUT) is False:
@@ -125,15 +125,16 @@ def Pipeline(args):
     with open(args.LOG+"log.txt",'w+') as f:
         starttime=time.time()
         #FASTQ retrieval
-        print("Retrieving FASTQ files...")
-        curr=time.time()        
-        os.system("./FASTERQ.sh "+args.ACCESSION+" "+args.ACCESSIONOUTPUT+" "+args.PREFETCHDIR)
-        run=str((time.time()-curr)/3600)
-        print("Finished retreiving FASTQ files in "+run+" hours.")       
-        f.write("Retrieving FASTQ files: "+run+" hours\n")     
+        if args.ACCESSION is not None:
+            print("Retrieving FASTQ files...")
+            curr=time.time()        
+            os.system("./FASTERQ.sh "+args.ACCESSION+" "+args.ACCESSIONOUTPUT+" "+args.PREFETCHDIR)
+            run=str((time.time()-curr)/3600)
+            print("Finished retreiving FASTQ files in "+run+" hours.")       
+            f.write("Retrieving FASTQ files: "+run+" hours\n")     
 
         #BWA index 
-        if args.INDEX:
+        if args.INDEX is not None:
             print("Indexing reference file...")
             curr=time.time()
             os.system("bwa index "+args.REFERENCE)                            
@@ -153,7 +154,7 @@ def Pipeline(args):
 
         print("Adding Read Groups...")
         curr=time.time()
-        if(args.PLATFORMUNIT):
+        if(args.PLATFORMUNIT is not None):
             SamToBamAddRG(args.TEMP,args.TEMP,args.THREADS, args.READGROUP[0],args.READGROUP[1],args.READGROUP[2],PU,args.DEBUG)
         else: SamToBamAddRG(args.TEMP,args.TEMP,args.THREADS, args.READGROUP[0],args.READGROUP[1],args.READGROUP[2],None,args.DEBUG)
         run=str((time.time()-curr)/3600)
