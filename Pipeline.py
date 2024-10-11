@@ -140,7 +140,7 @@ def Pipeline(args):
             f.write("Retrieving FASTQ files: "+run+" hours\n")     
 
         #BWA index 
-        if args.INDEX is not None:
+        if args.INDEX:
             print("Indexing reference file...")
             curr=time.time()
             os.system("bwa index "+args.REFERENCE)                            
