@@ -47,18 +47,20 @@ def ValidateInputs(args):
         args.LOG+="/"
     if args.OUTPUT[-1]!='/':
         args.OUTPUT+="/"
-    if args.ACCESSION is not None and os.path.exists(args.ACCESSION) is False:
-        check=False
-        print(args.ACCESSION +" does not exist")
+    if args.ACCESSION is not None:
+        if os.path.exists(args.ACCESSION) is False:
+            check=False
+            print(args.ACCESSION +" does not exist")
     if os.path.exists(args.OUTPUT) is False:
         check=False
         print(args.OUTPUT +" does not exist")
     if os.path.exists(args.ACCESSIONOUTPUT) is False:
         check=False
         print(args.ACCESSIONOUTPUT +" does not exist")
-    if os.path.exists(args.PREFETCHDIR) is False:
-        check=False
-        print(args.PREFETCHDIR +" does not exist")      
+    if args.PREFETCHDIR is not None:
+        if os.path.exists(args.PREFETCHDIR) is False:
+            check=False
+            print(args.PREFETCHDIR +" does not exist")      
     if os.path.exists(args.REFERENCE) is False:
         check=False
         print(args.REFERENCE +" does not exist")     
