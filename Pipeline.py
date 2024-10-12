@@ -160,7 +160,7 @@ def Pipeline(args):
 
         print("Adding Read Groups...")
         curr=time.time()
-        if(args.PLATFORMUNIT is not None):
+        if(args.PLATFORMUNIT):
             SamToBamAddRG(args.TEMP,args.TEMP,args.THREADS, args.READGROUP[0],args.READGROUP[1],args.READGROUP[2],PU,args.DEBUG)
         else: SamToBamAddRG(args.TEMP,args.TEMP,args.THREADS, args.READGROUP[0],args.READGROUP[1],args.READGROUP[2],None,args.DEBUG)
         run=str((time.time()-curr)/3600)
